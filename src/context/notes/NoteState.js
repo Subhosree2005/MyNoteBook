@@ -1,6 +1,6 @@
 import noteContext from "./noteContext";
 import { useState } from "react";
-import { API_HOST } from "../config/api";
+import { API_HOST } from "../../config/api";
 
 
 
