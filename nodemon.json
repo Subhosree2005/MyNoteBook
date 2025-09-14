@@ -1,0 +1,8 @@
+{
+  "watch": ["backend"],
+  "ext": "js,json",
+  "ignore": ["src", "public", "node_modules"],
+  "exec": "node backend/index.js"
+}
+
+
