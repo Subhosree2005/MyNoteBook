@@ -12,7 +12,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const host = process.env.NODE_ENV === 'production' 
+      const host = (process.env.NODE_ENV === 'production' || window.location.hostname !== 'localhost') 
           ? "https://backend-mynotebook-xnja.onrender.com"
           : "http://localhost:5000";
       const response = await fetch(`${host}/api/auth/login`, {
