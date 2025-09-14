@@ -11,17 +11,25 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('https://backend-mynotebook-xnja.onrender.com/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials)
-    });
-    const json = await response.json();
-    if (response.ok && json.authtoken) {
-      localStorage.setItem('token', json.authtoken);
-      navigate('/');
-    } else {
-      alert(json.error || 'Login failed');
+    try {
+      const host = process.env.NODE_ENV === 'production' 
+          ? "https://backend-mynotebook-xnja.onrender.com"
+          : "http://localhost:5000";
+      const response = await fetch(`${host}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials)
+      });
+      const json = await response.json();
+      if (response.ok && json.authtoken) {
+        localStorage.setItem('token', json.authtoken);
+        navigate('/');
+      } else {
+        alert(json.error || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Network error. Please check if the backend server is running.');
     }
   };
 

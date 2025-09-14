@@ -25,9 +25,10 @@ const NoteState = (props) => {
     ]
     const [notes, setNotes] = useState(notesInitial);
     
-    const host = "https://backend-mynotebook-xnja.onrender.com";
-
-   // const host = ""; // CRA proxy will forward to http://localhost:5000
+    // Use environment-based host configuration
+    const host = process.env.NODE_ENV === 'production' 
+        ? "https://backend-mynotebook-xnja.onrender.com"
+        : "http://localhost:5000"; // Use local backend for development
     const getAuthHeaders = () => ({
         "Content-Type": "application/json",
         "auth-token": localStorage.getItem("token") || ""
@@ -35,48 +36,74 @@ const NoteState = (props) => {
 
     // Fetch all notes
     const getNotes = async () => {
-        const response = await fetch(`${host}/api/notes/fetchallnotes`, {
-            method: "GET",
-            headers: getAuthHeaders()
-        });
-        if (response.ok) {
-            const data = await response.json();
-            setNotes(data);
+        try {
+            const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+                method: "GET",
+                headers: getAuthHeaders()
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setNotes(data);
+            } else {
+                console.error('Failed to fetch notes:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching notes:', error);
         }
     };
 
     // Add a note
     const addNote = async (title, description, tag) => {
-        const response = await fetch(`${host}/api/notes/addnote`, {
-            method: "POST",
-            headers: getAuthHeaders(),
-            body: JSON.stringify({ title, description, tag })
-        });
-        if (response.ok) {
-            const newNote = await response.json();
-            setNotes([...notes, newNote]);
+        try {
+            const response = await fetch(`${host}/api/notes/addnote`, {
+                method: "POST",
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ title, description, tag })
+            });
+            if (response.ok) {
+                const newNote = await response.json();
+                setNotes([...notes, newNote]);
+            } else {
+                console.error('Failed to add note:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error adding note:', error);
         }
     }
 
     
     // Delete a note
     const deleteNote = async (id) => {
-        await fetch(`${host}/api/notes/deletenote/${id}` , {
-            method: "DELETE",
-            headers: getAuthHeaders()
-        });
-        setNotes(notes.filter((n) => n._id !== id));
+        try {
+            const response = await fetch(`${host}/api/notes/deletenote/${id}` , {
+                method: "DELETE",
+                headers: getAuthHeaders()
+            });
+            if (response.ok) {
+                setNotes(notes.filter((n) => n._id !== id));
+            } else {
+                console.error('Failed to delete note:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting note:', error);
+        }
     }
     // Edit a note
     const editNote = async (id, title, description, tag) => {
-        const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-            method: "PUT",
-            headers: getAuthHeaders(),
-            body: JSON.stringify({ title, description, tag })
-        });
-        if (response.ok) {
-            const updated = await response.json();
-            setNotes(notes.map((n) => (n._id === id ? updated : n)));
+        try {
+            const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+                method: "PUT",
+                headers: getAuthHeaders(),
+                body: JSON.stringify({ title, description, tag })
+            });
+            if (response.ok) {
+                const updated = await response.json();
+                setNotes(notes.map((n) => (n._id === id ? updated : n)));
+            } else {
+                console.error('Failed to update note:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error updating note:', error);
         }
     }
 
