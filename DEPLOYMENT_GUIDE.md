@@ -3,13 +3,13 @@
 ## Backend Deployment on Render
 
 ### Environment Variables Required:
-1. **MONGODB_URI** - Your MongoDB Atlas connection string
-   - Example: `mongodb+srv://username:password@cluster.mongodb.net/mynotebook?retryWrites=true&w=majority`
+1. **mongoURI** - Your MongoDB Atlas connection string
+   - Value: `mongodb+srv://subhosreebanerjeedms154:Mynotebook@cluster0.jyx2lgy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
 ### Steps to Deploy:
 1. Push your backend code to GitHub
 2. Connect your GitHub repository to Render
-3. Set the environment variable `MONGODB_URI` in Render dashboard
+3. Set the environment variable `mongoURI` in Render dashboard with the above value
 4. Deploy the service
 
 ## Frontend Deployment on Netlify
@@ -22,15 +22,20 @@
 ## Fixed Issues:
 1. ✅ Backend port configuration (now uses `process.env.PORT`)
 2. ✅ CORS configuration (allows both localhost and production domains)
-3. ✅ MongoDB connection (supports both `MONGODB_URI` and `mongoURI`)
+3. ✅ MongoDB connection (uses MongoDB Atlas for both local and production)
+
 4. ✅ Frontend API calls (environment-based URL configuration)
 5. ✅ Error handling (improved error messages and debugging)
 6. ✅ Local development setup (automatically uses local backend when running locally)
+7. ✅ Import path fixes (corrected API configuration import paths)
+8. ✅ Environment variables (added dotenv support for local development)
 
 ## Key Changes Made:
 - **Environment-based API URLs**: Frontend now automatically uses local backend (`http://localhost:5000`) for development and deployed backend (`https://backend-mynotebook-xnja.onrender.com`) for production
 - **Improved Error Handling**: Added try-catch blocks and better error messages for debugging
 - **Better CORS Configuration**: Supports both development and production environments
+- **MongoDB Atlas Integration**: Both local and production now use the same MongoDB Atlas database
+- **Centralized API Configuration**: All API calls use a single configuration file for consistency
 
 ## Testing:
 ### Local Development:
