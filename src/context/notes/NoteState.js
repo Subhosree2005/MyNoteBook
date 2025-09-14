@@ -1,5 +1,6 @@
 import noteContext from "./noteContext";
 import { useState } from "react";
+import { API_HOST } from "../config/api";
 
 
 
@@ -25,15 +26,8 @@ const NoteState = (props) => {
     ]
     const [notes, setNotes] = useState(notesInitial);
     
-    // Use environment-based host configuration
-    const host = (process.env.NODE_ENV === 'production' || window.location.hostname !== 'localhost') 
-        ? "https://backend-mynotebook-xnja.onrender.com"
-        : "http://localhost:5000"; // Use local backend for development
-    
-    // Debug logging
-    console.log('Environment:', process.env.NODE_ENV);
-    console.log('Hostname:', window.location.hostname);
-    console.log('Using backend host:', host);
+    // Use centralized API configuration
+    const host = API_HOST;
     const getAuthHeaders = () => ({
         "Content-Type": "application/json",
         "auth-token": localStorage.getItem("token") || ""

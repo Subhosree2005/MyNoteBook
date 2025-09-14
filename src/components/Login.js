@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_HOST } from '../config/api';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -12,9 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const host = (process.env.NODE_ENV === 'production' || window.location.hostname !== 'localhost') 
-          ? "https://backend-mynotebook-xnja.onrender.com"
-          : "http://localhost:5000";
+      const host = API_HOST;
       const response = await fetch(`${host}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
