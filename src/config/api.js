@@ -2,7 +2,7 @@
 const getApiHost = () => {
   // Check if we're in production build
   if (process.env.NODE_ENV === 'production') {
-    return 'https://backend-mynotebook-xnja.onrender.com';
+    return 'https://mynotebook-gu17.onrender.com';
   }
   
   // Check if we're running on localhost
